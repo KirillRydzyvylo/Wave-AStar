@@ -92,7 +92,7 @@ public static void main(String[] args) {
 		
 		
 		
-		Navigation navigation = new Navigation(); 
+		WaveAlgorithm navigation = new WaveAlgorithm(); 
 		long startTime = System.currentTimeMillis();
 		char [][] map = navigation.searchRoute(map10);
 		long stopTime = System.currentTimeMillis()-startTime;
@@ -110,7 +110,7 @@ public static void main(String[] args) {
 		
 		
 			
-		NavigationAStar navigationAStar = new NavigationAStar(); 
+		AlgorithmAStae navigationAStar = new AlgorithmAStae(); 
 		long startTime2 = System.currentTimeMillis();
 		char [][] newmap = navigationAStar.searchRoute(map11);
 		long stopTime2 = System.currentTimeMillis()-startTime;

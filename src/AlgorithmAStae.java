@@ -1,15 +1,19 @@
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.function.BiFunction;
 
-public class NavigationAStar implements Navigator {
+
+//Алгоритм "А звезда"
+public class AlgorithmAStae implements Navigator {
 	private static final char WALL = '#';
+	private final static char WAY = '+';
 	private final static char ENTER = '@';
 	private final static char EXIT = 'X';
-	private int M ;
-	private int N ;
+	private int raws ;
+	private int lines ;
 	private char[][] map;
 	private int exitX;
 	private int exitY;
@@ -18,8 +22,8 @@ public class NavigationAStar implements Navigator {
 	
 	@Override
 	public char[][] searchRoute(char[][] map) {
-		M = map.length;
-		N = map[0].length;
+		raws = map.length;
+		lines = map[0].length;
 		this.map = map;
 		
 		try {
@@ -49,7 +53,7 @@ public class NavigationAStar implements Navigator {
 				}
 			}
 			
-			int exitPosition = exitX * N + exitY; 
+			int exitPosition = exitX * lines + exitY; 
 			if( way.get(exitPosition) == null ) {
 				return null;
 			}
@@ -64,14 +68,14 @@ public class NavigationAStar implements Navigator {
 						if( way.get(neigbords.get(i).getPosition()) != null &&  bestWay.contains(neigbords.get(i).getPosition()) == false ) {
 							route = neigbords.get(i);
 							bestWay.add(route.getPosition());
-							map[route.getX()][route.getY()]='+';
+							map[route.getX()][route.getY()] = WAY;
 							break;
 						}
 					}
 					neigbords=findNeighbords(route); 
 				}
  				while( startPosition.getPosition() != route.getPosition() );
-				map[route.getX()][route.getY()]='@';
+				map[route.getX()][route.getY()] = ENTER;
 				return map;
 			}			
 		}
@@ -125,37 +129,39 @@ public class NavigationAStar implements Navigator {
 	
 	
 	
-	public ArrayList<Position> findNeighbords(Position p){
-		BiFunction<Integer,Integer,Boolean> isWall = ( x, y )->( map[x][y] == WALL );
+	private ArrayList<Position> findNeighbords(Position p){
+		
 
 		ArrayList<Position> neighbords = new ArrayList<>();
 		if(p.getX() > 0) {
-			if(!isWall.apply( p.getX() - 1, p.getY() )) {
+			if(!isWall( p.getX() - 1, p.getY() )) {
 				neighbords.add(new Position(p.getX() - 1, p.getY()));
 			}
 		}
-		if(p.getX() < M - 1) {
-			if(!isWall.apply(  p.getX() + 1, p.getY() )) {
+		if(p.getX() < raws - 1) {
+			if(!isWall(  p.getX() + 1, p.getY() )) {
 				neighbords.add(new Position(p.getX() + 1, p.getY() ));
 			}
 		}
 		if(p.getY() > 0) {
-			if(!isWall.apply( p.getX(), p.getY() - 1 )) {
+			if(!isWall( p.getX(), p.getY() - 1 )) {
 				neighbords.add(new Position(p.getX(), p.getY() - 1 ));
 			}
 		}
-		if(p.getY() < N - 1) {
-			if(!isWall.apply( p.getX(), p.getY() + 1 )) {
+		if(p.getY() < lines - 1) {
+			if(!isWall( p.getX(), p.getY() + 1 )) {
 				neighbords.add(new Position(p.getX(), p.getY() + 1 ));
 			}
 		}
 		return neighbords;
 	}
 	
-
+	private boolean isWall( int x, int y ) {
+		return ( map[x][y] == WALL );
+	}
 	
 	
-	public class Position implements Comparable<Position>{
+	private  class Position implements Comparable<Position>{
 		private int x;
 		private int y;
 		private int position;
@@ -166,7 +172,7 @@ public class NavigationAStar implements Navigator {
 			
 			this.x = x;
 			this.y = y;
-			position = x * N + y ;
+			position = x * lines + y ;
 			distance = (int)(Math.pow( exitX - x , 2) + Math.pow( exitY - y , 2));
 		}
 
@@ -193,37 +199,15 @@ public class NavigationAStar implements Navigator {
 		public int getY() {
 			return y;
 		}
-
-		
 		
 		@Override
 		public int compareTo(Position p) {
 			return distance > p.getDistance() ? 1 : distance < p.getDistance() ? -1 : 0 ;
 		}
-
-		
 		
 		@Override
 		public String toString() {
 			return "Position [x=" + x + ", y=" + y + ", position=" + position + ", distance=" + distance + "]";
-		}
-		
-		
-		
-				
-	}
-	
-	public void drawMap() {
-		for(int i = 0 ; i < map.length ; i++) {
-			for(int j = 0 ; j < map[0].length ; j++) {
-				System.out.print(map[i][j]+" ");
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-	
-	
+		}		
+	}	
 }
-
-
