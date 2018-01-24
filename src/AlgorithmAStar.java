@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 
 //Алгоритм "А звезда"
-public class AlgorithmAStae implements Navigator {
+public class AlgorithmAStar implements Navigator {
 	private static final char WALL = '#';
 	private final static char WAY = '+';
 	private final static char ENTER = '@';
@@ -180,16 +180,8 @@ public class AlgorithmAStae implements Navigator {
 			return position;
 		}
 
-		public void setPosition(int position) {
-			this.position = position;
-		}
-
 		public int getDistance() {
 			return distance;
-		}
-
-		public void setDistance(int x , int y) {
-			this.distance = (int)(Math.pow( x - this.x , 2) + Math.pow( y - this.y , 2));
 		}
 
 		public int getX() {

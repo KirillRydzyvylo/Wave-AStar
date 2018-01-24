@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 public class NavigetionStarter3 {
 public static void main(String[] args) {
@@ -110,7 +109,7 @@ public static void main(String[] args) {
 		
 		
 			
-		AlgorithmAStae navigationAStar = new AlgorithmAStae(); 
+		AlgorithmAStar navigationAStar = new AlgorithmAStar(); 
 		long startTime2 = System.currentTimeMillis();
 		char [][] newmap = navigationAStar.searchRoute(map11);
 		long stopTime2 = System.currentTimeMillis()-startTime;
